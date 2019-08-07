@@ -54,7 +54,9 @@ const FormikFormPage = withFormik({
     };
   },
   validationSchema: Yup.object().shape({
-    name: Yup.string().required("Name is Required"),
+    name: Yup.string()
+    .required("Name is Required")
+    .max(50, 'Your name is too long'),
     email: Yup.string()
       .email("Email is not Valid")
       .required("Email is Required"),
@@ -67,8 +69,15 @@ const FormikFormPage = withFormik({
     )
   }),
 
-  handleSubmit(values) {
-    console.log(values);
+  handleSubmit(values, formikBag) {
+      if (values.email === "waffles@syrup.com") {
+          formikBag.setErrors({email: "That email is already taken"})
+        } else if (values.tos === false) {
+            formikBag.setErrors({tos: "Please Accept the Terms of Service"})
+        }else {
+            console.log(values);
+        }
+        
   }
 })(FormPage);
 export default FormikFormPage;
