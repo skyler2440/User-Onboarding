@@ -1,9 +1,15 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { withFormik, Form, Field } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import './Form.css'
-function FormPage({ values, errors, touched }) {
+function FormPage({ values, errors, touched, status }) {
+    const [user, setUser] = useState([]);
+    useEffect(() => {
+        if(status) {
+            setUser([...user, status])
+        }
+    }, [status])
   return (
     <>
       <h1>Please Create an Account</h1>
@@ -50,8 +56,18 @@ function FormPage({ values, errors, touched }) {
             Accept TOS
           </label>
         </div>
-        <button>Submit</button>
+        <button type='submit'>Submit</button>
       </Form>
+      {user.map(users => (
+          <>
+          <p key={users.name}>{users.name}</p>
+          <p key={users.phone}>{users.phone}</p>
+          <p key={users.email}>{users.email}</p>
+          <p key={users.password}>{users.password}</p>
+          <p key={users.role}>{users.role}</p>
+
+            </>
+      ))}
     </>
   );
 }
@@ -107,7 +123,10 @@ const FormikFormPage = withFormik({
     } else {
       axios
         .post("https://reqres.in/api/users", values)
-        .then(res => console.log(res))
+        .then(res => {
+            // console.log(res.data)
+            formikBag.setStatus(res.data)
+        })
         .catch(err => console.log(err.response));
     }
   }
