@@ -3,8 +3,9 @@ body{
     color:white;
 }
 .form{
-    border: 1px solid black;
-    width: 50%;
+    /* border: 1px solid black; */
+    border-radius: 10%;
+    width: 400px;
     margin: 0 auto;
     box-shadow: lightgrey .25rem .3rem 2rem;
     background-color: grey;
